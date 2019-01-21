@@ -1,5 +1,6 @@
 package com.stoppasung.stoppasung.shared.dto;
 
+import com.stoppasung.stoppasung.model.Role;
 import com.stoppasung.stoppasung.model.UserStatus;
 
 import java.io.Serializable;
@@ -14,6 +15,15 @@ public class UserDto implements Serializable {
     private String phoneNumber;
     private String emailVerificationToken;
     private UserStatus userStatus;
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public Long getIdUser() {
         return idUser;

@@ -8,7 +8,8 @@ import javax.validation.constraints.NotNull;
 public class UserModel extends AuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_user")
+    private Long idUser;
 
     @NotNull
     @Column(name = "user_email", unique = true)
@@ -40,12 +41,12 @@ public class UserModel extends AuditModel {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private UserDetailModel userDetailModel;
 
-    public Long getId() {
-        return id;
+    public Long getIdUser() {
+        return idUser;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public String getEmail() {

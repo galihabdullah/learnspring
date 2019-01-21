@@ -5,10 +5,13 @@ import com.stoppasung.stoppasung.model.Role;
 import com.stoppasung.stoppasung.model.UserModel;
 import com.stoppasung.stoppasung.services.UserService;
 import com.stoppasung.stoppasung.shared.dto.UserDto;
+import com.stoppasung.stoppasung.ui.model.request.UserLoginRequest;
 import com.stoppasung.stoppasung.ui.model.request.UserRegistrationRequest;
+import com.stoppasung.stoppasung.ui.model.response.UserLoginResponse;
 import com.stoppasung.stoppasung.ui.model.response.UserRegistrationResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +21,6 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -32,12 +34,15 @@ public class UserController {
         BeanUtils.copyProperties(userReq, userDto);
 
         UserDto createUser = userService.createUser(userDto);
-        BeanUtils.copyProperties(userDto, returnValue);
+        BeanUtils.copyProperties(createUser, returnValue);
         return returnValue;
     }
 
     @PostMapping("/login")
-    public String login(){
-        return "login was called";
+    public UserLoginResponse login(@Valid @RequestBody UserLoginRequest userLoginRequest){
+        UserLoginResponse returnValue = new UserLoginResponse();
+        UserDto userDto = userService.getUser(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+        BeanUtils.copyProperties(userDto, returnValue);
+        return returnValue;
     }
 }

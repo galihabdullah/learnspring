@@ -3,7 +3,6 @@ package com.stoppasung.stoppasung.ui.model.response;
 public class UserRegistrationResponse {
     private String email;
     private String fullName;
-    private String phoneNumnber;
 
     public String getEmail() {
         return email;
@@ -21,11 +20,4 @@ public class UserRegistrationResponse {
         this.fullName = fullName;
     }
 
-    public String getPhoneNumnber() {
-        return phoneNumnber;
-    }
-
-    public void setPhoneNumnber(String phoneNumnber) {
-        this.phoneNumnber = phoneNumnber;
-    }
 }
