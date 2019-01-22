@@ -4,6 +4,16 @@ public class UserRegistrationResponse {
     private String email;
     private String fullName;
 
+    private String emailSendStatus;
+
+    public String getEmailSendStatus() {
+        return emailSendStatus;
+    }
+
+    public void setEmailSendStatus(String emailSendStatus) {
+        this.emailSendStatus = emailSendStatus;
+    }
+
     public String getEmail() {
         return email;
     }

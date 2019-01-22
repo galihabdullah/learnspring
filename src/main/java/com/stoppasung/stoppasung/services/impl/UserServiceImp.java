@@ -11,7 +11,11 @@ import com.stoppasung.stoppasung.shared.utils.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -43,12 +47,25 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDto getUser(String email, String password) {
-        UserModel userModel = userRepository.findByEmail(email);
-        if(userModel == null) throw new ResourceNotFoundException("email: " + email + " not registered");
-        if(bCryptPasswordEncoder.matches(password, userModel.getPassword()));
+    public UserDto getUser(UserDto userDto) {
+        UserModel userModel = userRepository.findByEmail(userDto.getEmail());
+        if(userModel == null) throw new ResourceNotFoundException("email: " + userDto.getEmail() + " not registered");
+        if(!bCryptPasswordEncoder.matches(userDto.getPassword(), userModel.getPassword())) throw new ResourceNotFoundException("password salah");
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(userModel, returnValue);
+        return returnValue;
+    }
+
+    public Map<String, Object> getUserByToken(String token){
+        HashMap returnValue = new HashMap();
+        UserModel userModel = userRepository.findByEmailVerificationToken(token);
+        if(userModel != null){
+            userModel.setUserStatus(UserStatus.ACTIVE);
+            userRepository.save(userModel);
+            returnValue.put("message", "sukses");
+        }else{
+            returnValue.put("message", "verifikasi gagal");
+        }
         return returnValue;
     }
 
