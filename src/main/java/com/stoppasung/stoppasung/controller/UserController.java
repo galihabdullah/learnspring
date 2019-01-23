@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/verification")
     public Map<String, Object> userVerification(@RequestParam(value = "token") String token){
-            return userService.getUserByToken(token);
+            return userService.getUserByEmailVerificationToken(token);
     }
 
     @PostMapping("/login")
@@ -53,5 +53,10 @@ public class UserController {
         UserDto userDto = userService.getUser(login);
         BeanUtils.copyProperties(userDto, returnValue);
         return returnValue;
+    }
+
+    @GetMapping("/resetpassword")
+    public Map<String, Object> resetPassword(@RequestParam(value = "token") String token){
+        return null;
     }
 }

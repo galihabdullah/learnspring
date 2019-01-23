@@ -62,7 +62,7 @@ public class UserServiceImp implements UserService {
 
     }
 
-    public Map<String, Object> getUserByToken(String token){
+    public Map<String, Object> getUserByEmailVerificationToken(String token){
         HashMap returnValue = new HashMap();
         UserModel userModel = userRepository.findByEmailVerificationToken(token);
         if(userModel != null){
@@ -75,4 +75,12 @@ public class UserServiceImp implements UserService {
         return returnValue;
     }
 
+    public UserDto getUserByEmail(UserDto userDto){
+//        HashMap returnValue = new HashMap();
+//        UserModel userModel = userRepository.findByEmail(userDto.getEmail());
+//        if(userModel != null) throw new ResourceNotFoundException("email" + userDto.getEmail() + "not found");
+//        UserDto getUser = new UserDto();
+//        BeanUtils.copyProperties(userModel, getUser);
+        return null;
+    }
 }

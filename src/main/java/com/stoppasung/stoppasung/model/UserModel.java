@@ -38,6 +38,10 @@ public class UserModel extends AuditModel {
     @Column(name = "email_verification_status")
     private UserStatus userStatus;
 
+    @NotNull
+    @Column(name = "password_reset_token")
+    private String passwordResetToken;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private UserDetailModel userDetailModel;
 
@@ -111,5 +115,13 @@ public class UserModel extends AuditModel {
 
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
+    }
+
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
     }
 }

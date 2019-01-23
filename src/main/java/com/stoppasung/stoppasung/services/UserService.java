@@ -7,5 +7,6 @@ import java.util.Map;
 public interface UserService {
     UserDto createUser(UserDto userDto);
     UserDto getUser(UserDto userDto);
-    Map<String, Object> getUserByToken(String token);
+    Map<String, Object> getUserByEmailVerificationToken(String token);
+    UserDto getUserByEmail(UserDto userDto);
 }
