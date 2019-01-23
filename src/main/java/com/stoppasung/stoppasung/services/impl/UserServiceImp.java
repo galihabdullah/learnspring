@@ -39,7 +39,7 @@ public class UserServiceImp implements UserService {
         userModel.setEmailVerificationToken(emailVerificationToken);
         userModel.setUserStatus(UserStatus.INACTIVE);
         userModel.setRole(Role.pelapor);
-        userModel.setPassword(bCryptPasswordEncoder.encode(encryptedPassword));
+        userModel.setPassword(encryptedPassword);
         UserModel stored = userRepository.save(userModel);
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(stored, returnValue);
@@ -47,13 +47,19 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDto getUser(UserDto userDto) {
-        UserModel userModel = userRepository.findByEmail(userDto.getEmail());
-        if(userModel == null) throw new ResourceNotFoundException("email: " + userDto.getEmail() + " not registered");
-        if(!bCryptPasswordEncoder.matches(userDto.getPassword(), userModel.getPassword())) throw new ResourceNotFoundException("password salah");
-        UserDto returnValue = new UserDto();
-        BeanUtils.copyProperties(userModel, returnValue);
-        return returnValue;
+    public UserDto getUser(UserDto login) {
+        UserModel userModel = userRepository.findByEmail(login.getEmail());
+        if(userModel == null) throw new ResourceNotFoundException("email: " + login.getEmail() + " not registered");
+        if(bCryptPasswordEncoder.matches(login.getPassword(), userModel.getPassword()))
+        {
+            if(userModel.getUserStatus() == UserStatus.INACTIVE) throw new ResourceNotFoundException(login.getEmail() + "belum diverifikasi");
+            UserDto returnValue = new UserDto();
+            BeanUtils.copyProperties(userModel, returnValue);
+            return returnValue;
+        }else{
+            throw new ResourceNotFoundException("password salah");
+        }
+
     }
 
     public Map<String, Object> getUserByToken(String token){

@@ -35,7 +35,7 @@ public class UserController {
         BeanUtils.copyProperties(userReq, userDto);
 
         UserDto createUser = userService.createUser(userDto);
-        utils.sendmail(createUser.getEmail(), createUser.getFullName(), createUser.getEmailVerificationToken());
+        //utils.sendmail(createUser.getEmail(), createUser.getFullName(), createUser.getEmailVerificationToken());
         BeanUtils.copyProperties(createUser, returnValue);
         return returnValue;
     }
