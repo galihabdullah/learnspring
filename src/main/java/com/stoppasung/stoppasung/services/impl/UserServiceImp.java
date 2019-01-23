@@ -95,7 +95,7 @@ public class UserServiceImp implements UserService {
         if(userModel == null) throw new ResourceNotFoundException("email " + email + " not found");
         userModel.setPasswordResetToken(token);
         userRepository.save(userModel);
-        String message = "Silahkan klik link  \n " + url + "resetpassword?token=" + token + "untuk reset password";
+        String message = "Silahkan klik link  \n " + url + "resetpassword?token=" + token + " untuk reset password";
         try {
             utils.sendmail(userModel.getEmail(), userModel.getFullName(), message);
             returnValue.put("message", "reset token berhasil dikirim");
