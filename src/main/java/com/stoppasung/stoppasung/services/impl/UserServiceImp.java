@@ -23,7 +23,7 @@ import java.util.Map;
 @Service
 public class UserServiceImp implements UserService {
 
-    private final String url = "http://localhost:8080/";
+    private final String url = "http://stoppasung.herokuapp.com/";
 
     @Autowired
     UserRepository userRepository;
