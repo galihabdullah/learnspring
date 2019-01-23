@@ -16,6 +16,15 @@ public class UserDto implements Serializable {
     private String emailVerificationToken;
     private UserStatus userStatus;
     private Role role;
+    private String passwordResetToken;
+
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
 
     public Role getRole() {
         return role;

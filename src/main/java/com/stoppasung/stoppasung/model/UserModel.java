@@ -38,7 +38,6 @@ public class UserModel extends AuditModel {
     @Column(name = "email_verification_status")
     private UserStatus userStatus;
 
-    @NotNull
     @Column(name = "password_reset_token")
     private String passwordResetToken;
 

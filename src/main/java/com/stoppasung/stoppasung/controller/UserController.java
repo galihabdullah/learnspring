@@ -9,12 +9,14 @@ import com.stoppasung.stoppasung.ui.model.response.UserLoginResponse;
 import com.stoppasung.stoppasung.ui.model.response.UserRegistrationResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -29,13 +31,12 @@ public class UserController {
 
 
     @PostMapping("/registration")
-    public UserRegistrationResponse registration(@Valid @RequestBody UserRegistrationRequest userReq) throws AddressException, MessagingException, IOException {
+    public UserRegistrationResponse registration(@Valid @RequestBody UserRegistrationRequest userReq){
         UserRegistrationResponse returnValue = new UserRegistrationResponse();
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userReq, userDto);
 
         UserDto createUser = userService.createUser(userDto);
-        //utils.sendmail(createUser.getEmail(), createUser.getFullName(), createUser.getEmailVerificationToken());
         BeanUtils.copyProperties(createUser, returnValue);
         return returnValue;
     }
@@ -56,7 +57,18 @@ public class UserController {
     }
 
     @GetMapping("/resetpassword")
-    public Map<String, Object> resetPassword(@RequestParam(value = "token") String token){
-        return null;
+    public Map<String, Object> resetPassword(@RequestParam(value = "email") String email){
+        return userService.resetPassword(email);
+    }
+
+    @PutMapping("/resetpassword")
+    public Map<String, Object> newPassword(@RequestParam(value = "token") String token, @Valid @RequestBody UserRegistrationRequest userRegistrationRequest){
+        HashMap<String, Object> returnValue = new HashMap<>();
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(userRegistrationRequest, userDto);
+        userDto.setPasswordResetToken(token);
+        userService.setNewPassword(userDto);
+        returnValue.put("status", "sukses");
+        return returnValue;
     }
 }

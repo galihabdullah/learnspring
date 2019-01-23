@@ -14,11 +14,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class UserServiceImp implements UserService {
+
+    private final String url = "http://localhost:8080/";
 
     @Autowired
     UserRepository userRepository;
@@ -41,6 +46,14 @@ public class UserServiceImp implements UserService {
         userModel.setRole(Role.pelapor);
         userModel.setPassword(encryptedPassword);
         UserModel stored = userRepository.save(userModel);
+        String message = "Silahkan verifikasi email anda dengan klik link dibawah ini \n " + url + "verification?token=" + emailVerificationToken;
+        try {
+            utils.sendmail(userModel.getEmail(), userModel.getFullName(), message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(stored, returnValue);
         return returnValue;
@@ -75,12 +88,35 @@ public class UserServiceImp implements UserService {
         return returnValue;
     }
 
-    public UserDto getUserByEmail(UserDto userDto){
-//        HashMap returnValue = new HashMap();
-//        UserModel userModel = userRepository.findByEmail(userDto.getEmail());
-//        if(userModel != null) throw new ResourceNotFoundException("email" + userDto.getEmail() + "not found");
-//        UserDto getUser = new UserDto();
-//        BeanUtils.copyProperties(userModel, getUser);
-        return null;
+    public HashMap<String, Object> resetPassword(String email) {
+        HashMap returnValue = new HashMap();
+        String token = utils.generateVericationToken(6);
+        UserModel userModel = userRepository.findByEmail(email);
+        if(userModel == null) throw new ResourceNotFoundException("email " + email + " not found");
+        userModel.setPasswordResetToken(token);
+        userRepository.save(userModel);
+        String message = "Silahkan klik link  \n " + url + "resetpassword?token=" + token + "untuk reset password";
+        try {
+            utils.sendmail(userModel.getEmail(), userModel.getFullName(), message);
+            returnValue.put("message", "reset token berhasil dikirim");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return returnValue;
+    }
+
+    public UserDto setNewPassword(UserDto userDto){
+        UserModel userModel = userRepository.findByPasswordResetToken(userDto.getPasswordResetToken());
+        if(userModel == null) throw new ResourceNotFoundException("token tidak sesuai");
+        String encryptedPassword = bCryptPasswordEncoder.encode(userDto.getPassword());
+        userModel.setPassword(encryptedPassword);
+        userModel.setPasswordResetToken("0");
+        UserModel userModel1 = userRepository.save(userModel);
+        UserDto returnValue = new UserDto();
+        BeanUtils.copyProperties(userModel1, returnValue);
+        return returnValue;
+
     }
 }

@@ -9,4 +9,5 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
     UserModel findByEmailAndPassword(String email, String Password);
     UserModel findByEmail(String email);
     UserModel findByEmailVerificationToken(String token);
+    UserModel findByPasswordResetToken(String token);
 }

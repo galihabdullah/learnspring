@@ -36,45 +36,47 @@ public class Utils {
     private final String emailHost = "smtp.gmail.com";
     private final String emailPort = "465";
     private final String emailName = "ayopulih";
-    private final String url = "http://localhost:8080/verification?token=";
 
 
-
-    public String generateVericationToken(int length){
+    public String generateVericationToken(int length) {
         return randomString(length);
     }
 
-    public String randomString(int length){
+    public String randomString(int length) {
         StringBuilder returnValue = new StringBuilder();
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             returnValue.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));
         }
         return new String(returnValue);
     }
 
-    public void sendmail(String userEmail, String userName, String userToken) throws AddressException, MessagingException, IOException {
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+    public void sendmail(String userEmail, String userName, String message) throws AddressException, MessagingException, IOException {
+        try{
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.port", "587");
 
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(emailProvider, passProvider);
-            }
-        });
-        Message msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress(emailProvider, false));
+            Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(emailProvider, passProvider);
+                }
+            });
+            Message msg = new MimeMessage(session);
+            msg.setFrom(new InternetAddress(emailProvider, false));
 
-        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userEmail));
-        msg.setSubject("Verifikasi Email Ayo Pulih");
-        String message = "Silahkan verifikasi email anda dengan klik link dibawah ini \n "+ url+userToken;
-        msg.setContent(message, "text/html");
-        msg.setSentDate(new Date());
+            InternetAddress[] toAddress = {new InternetAddress(userEmail)};
+            msg.setRecipients(Message.RecipientType.TO, toAddress);
+            msg.setSubject(userEmail);
+            msg.setContent(message, "text/html");
+            msg.setSentDate(new Date());
 
-        Transport.send(msg);
+            Transport.send(msg);
+        }catch (MailException e){
+            e.printStackTrace();
+        }
+
     }
-
 
 }
