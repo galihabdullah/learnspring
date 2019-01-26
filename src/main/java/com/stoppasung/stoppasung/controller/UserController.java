@@ -5,6 +5,7 @@ import com.stoppasung.stoppasung.shared.dto.UserDto;
 import com.stoppasung.stoppasung.shared.utils.Utils;
 import com.stoppasung.stoppasung.ui.model.request.UserLoginRequest;
 import com.stoppasung.stoppasung.ui.model.request.UserRegistrationRequest;
+import com.stoppasung.stoppasung.ui.model.response.UserDashboardResponse;
 import com.stoppasung.stoppasung.ui.model.response.UserLoginResponse;
 import com.stoppasung.stoppasung.ui.model.response.UserRegistrationResponse;
 import org.springframework.beans.BeanUtils;
@@ -71,4 +72,5 @@ public class UserController {
         returnValue.put("status", "sukses");
         return returnValue;
     }
+
 }

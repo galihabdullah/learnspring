@@ -1,10 +1,13 @@
 package com.stoppasung.stoppasung.model;
 
+import com.stoppasung.stoppasung.model.pilihan.Role;
+import com.stoppasung.stoppasung.model.pilihan.UserStatus;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "user")
+@Table(name = "tb_user")
 public class UserModel extends AuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,8 +44,9 @@ public class UserModel extends AuditModel {
     @Column(name = "password_reset_token")
     private String passwordResetToken;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userModel")
     private UserDetailModel userDetailModel;
+
 
     public Long getIdUser() {
         return idUser;

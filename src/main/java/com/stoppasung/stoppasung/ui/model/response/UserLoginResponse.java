@@ -1,7 +1,7 @@
 package com.stoppasung.stoppasung.ui.model.response;
 
-import com.stoppasung.stoppasung.model.Role;
-import com.stoppasung.stoppasung.model.UserStatus;
+import com.stoppasung.stoppasung.model.pilihan.Role;
+import com.stoppasung.stoppasung.model.pilihan.UserStatus;
 
 public class UserLoginResponse {
 
@@ -9,6 +9,8 @@ public class UserLoginResponse {
     private String email;
     private Role role;
     private UserStatus userStatus;
+    private String fullName;
+    private String photoProfile;
 
     public Long getIdUser() {
         return idUser;
@@ -40,5 +42,21 @@ public class UserLoginResponse {
 
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhotoProfile() {
+        return photoProfile;
+    }
+
+    public void setPhotoProfile(String photoProfile) {
+        this.photoProfile = photoProfile;
     }
 }

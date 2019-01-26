@@ -1,7 +1,7 @@
 package com.stoppasung.stoppasung.shared.dto;
 
-import com.stoppasung.stoppasung.model.Role;
-import com.stoppasung.stoppasung.model.UserStatus;
+import com.stoppasung.stoppasung.model.pilihan.Role;
+import com.stoppasung.stoppasung.model.pilihan.UserStatus;
 
 import java.io.Serializable;
 
@@ -17,6 +17,11 @@ public class UserDto implements Serializable {
     private UserStatus userStatus;
     private Role role;
     private String passwordResetToken;
+    private String photoProfile;
+    private String alamat;
+    private String kota;
+    private String bio;
+
 
     public String getPasswordResetToken() {
         return passwordResetToken;
@@ -88,5 +93,37 @@ public class UserDto implements Serializable {
 
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
+    }
+
+    public String getPhotoProfile() {
+        return photoProfile;
+    }
+
+    public void setPhotoProfile(String photoProfile) {
+        this.photoProfile = photoProfile;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getKota() {
+        return kota;
+    }
+
+    public void setKota(String kota) {
+        this.kota = kota;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

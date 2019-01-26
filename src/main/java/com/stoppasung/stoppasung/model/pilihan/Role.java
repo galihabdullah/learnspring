@@ -1,4 +1,4 @@
-package com.stoppasung.stoppasung.model;
+package com.stoppasung.stoppasung.model.pilihan;
 
 public enum Role {
     dokter,

@@ -1,21 +1,20 @@
 package com.stoppasung.stoppasung.services.impl;
 
+import com.stoppasung.stoppasung.Repository.UserDetailRepository;
 import com.stoppasung.stoppasung.Repository.UserRepository;
 import com.stoppasung.stoppasung.error.ResourceNotFoundException;
-import com.stoppasung.stoppasung.model.Role;
+import com.stoppasung.stoppasung.model.pilihan.Role;
 import com.stoppasung.stoppasung.model.UserModel;
-import com.stoppasung.stoppasung.model.UserStatus;
+import com.stoppasung.stoppasung.model.pilihan.UserStatus;
 import com.stoppasung.stoppasung.services.UserService;
 import com.stoppasung.stoppasung.shared.dto.UserDto;
 import com.stoppasung.stoppasung.shared.utils.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +26,9 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserDetailRepository userDetailRepository;
 
     @Autowired
     Utils utils;
@@ -65,7 +67,7 @@ public class UserServiceImp implements UserService {
         if(userModel == null) throw new ResourceNotFoundException("email: " + login.getEmail() + " not registered");
         if(bCryptPasswordEncoder.matches(login.getPassword(), userModel.getPassword()))
         {
-            if(userModel.getUserStatus() == UserStatus.INACTIVE) throw new ResourceNotFoundException(login.getEmail() + "belum diverifikasi");
+            if(userModel.getUserStatus() == UserStatus.INACTIVE) throw new ResourceNotFoundException("email " + login.getEmail() + " belum diverifikasi");
             UserDto returnValue = new UserDto();
             BeanUtils.copyProperties(userModel, returnValue);
             return returnValue;
