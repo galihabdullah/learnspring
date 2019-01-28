@@ -77,7 +77,7 @@ public class UserController {
     }
 
     @PutMapping("{idUser}/profile")
-    public UserProfileResponse addUserProfile(@RequestParam(value = "idUser") Long idUser,
+    public UserProfileResponse addUserProfile(@PathVariable(value = "idUser") Long idUser,
                                               @Valid @RequestBody UserProfileRequest userProfileRequest){
         UserProfileResponse returnValue = new UserProfileResponse();
         UserProfileDto profileDto = new UserProfileDto();
