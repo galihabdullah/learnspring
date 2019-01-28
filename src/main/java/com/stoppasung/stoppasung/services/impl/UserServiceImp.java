@@ -1,8 +1,9 @@
 package com.stoppasung.stoppasung.services.impl;
 
-import com.stoppasung.stoppasung.Repository.UserDetailRepository;
+import com.stoppasung.stoppasung.Repository.UserProfileRepository;
 import com.stoppasung.stoppasung.Repository.UserRepository;
 import com.stoppasung.stoppasung.error.ResourceNotFoundException;
+import com.stoppasung.stoppasung.model.UserProfileModel;
 import com.stoppasung.stoppasung.model.pilihan.Role;
 import com.stoppasung.stoppasung.model.UserModel;
 import com.stoppasung.stoppasung.model.pilihan.UserStatus;
@@ -28,7 +29,7 @@ public class UserServiceImp implements UserService {
     UserRepository userRepository;
 
     @Autowired
-    UserDetailRepository userDetailRepository;
+    UserProfileRepository userProfileRepository;
 
     @Autowired
     Utils utils;
@@ -41,6 +42,7 @@ public class UserServiceImp implements UserService {
         if(userRepository.findByEmail(userDto.getEmail()) != null) throw new RuntimeException("Record Already Exist");
         String encryptedPassword = bCryptPasswordEncoder.encode(userDto.getPassword());
         UserModel userModel = new UserModel();
+        UserProfileModel userProfileModel = new UserProfileModel();
         BeanUtils.copyProperties(userDto, userModel);
         String emailVerificationToken = utils.generateVericationToken(20);
         userModel.setEmailVerificationToken(emailVerificationToken);
@@ -48,6 +50,8 @@ public class UserServiceImp implements UserService {
         userModel.setRole(Role.pelapor);
         userModel.setPassword(encryptedPassword);
         UserModel stored = userRepository.save(userModel);
+        userProfileModel.setUserModel(stored);
+        userProfileRepository.save(userProfileModel);
         String message = "Silahkan verifikasi email anda dengan klik link dibawah ini \n " + url + "verification?token=" + emailVerificationToken;
         try {
             utils.sendmail(userModel.getEmail(), userModel.getFullName(), message);

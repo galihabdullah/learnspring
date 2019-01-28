@@ -1,27 +1,27 @@
 package com.stoppasung.stoppasung.controller;
 
+import com.stoppasung.stoppasung.services.UserProfileService;
 import com.stoppasung.stoppasung.services.UserService;
 import com.stoppasung.stoppasung.shared.dto.UserDto;
+import com.stoppasung.stoppasung.shared.dto.UserProfileDto;
 import com.stoppasung.stoppasung.shared.utils.Utils;
 import com.stoppasung.stoppasung.ui.model.request.UserLoginRequest;
+import com.stoppasung.stoppasung.ui.model.request.UserProfileRequest;
 import com.stoppasung.stoppasung.ui.model.request.UserRegistrationRequest;
-import com.stoppasung.stoppasung.ui.model.response.UserDashboardResponse;
 import com.stoppasung.stoppasung.ui.model.response.UserLoginResponse;
+import com.stoppasung.stoppasung.ui.model.response.UserProfileResponse;
 import com.stoppasung.stoppasung.ui.model.response.UserRegistrationResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -29,6 +29,9 @@ public class UserController {
 
     @Autowired
     Utils utils;
+
+    @Autowired
+    UserProfileService userProfileService;
 
 
     @PostMapping("/registration")
@@ -70,6 +73,17 @@ public class UserController {
         userDto.setPasswordResetToken(token);
         userService.setNewPassword(userDto);
         returnValue.put("status", "sukses");
+        return returnValue;
+    }
+
+    @PutMapping("{idUser}/profile")
+    public UserProfileResponse addUserProfile(@RequestParam(value = "idUser") Long idUser,
+                                              @Valid @RequestBody UserProfileRequest userProfileRequest){
+        UserProfileResponse returnValue = new UserProfileResponse();
+        UserProfileDto profileDto = new UserProfileDto();
+        BeanUtils.copyProperties(userProfileRequest, profileDto);
+        UserProfileDto profile = userProfileService.addUserProfil(idUser, profileDto);
+        BeanUtils.copyProperties(profile, returnValue);
         return returnValue;
     }
 

@@ -1,11 +1,13 @@
 package com.stoppasung.stoppasung.model;
 
+import com.stoppasung.stoppasung.model.pilihan.Kota;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_user_detail")
-public class UserDetailModel extends AuditModel {
+public class UserProfileModel extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +17,7 @@ public class UserDetailModel extends AuditModel {
     private String alamat;
 
     @Column(name = "kota")
-    private String kota;
+    private Kota kota;
 
     @Lob
     @Column(name = "bio")
@@ -52,11 +54,11 @@ public class UserDetailModel extends AuditModel {
         this.alamat = alamat;
     }
 
-    public String getKota() {
+    public Kota getKota() {
         return kota;
     }
 
-    public void setKota(String kota) {
+    public void setKota(Kota kota) {
         this.kota = kota;
     }
 

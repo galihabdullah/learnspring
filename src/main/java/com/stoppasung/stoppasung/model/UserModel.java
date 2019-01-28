@@ -45,7 +45,7 @@ public class UserModel extends AuditModel {
     private String passwordResetToken;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userModel")
-    private UserDetailModel userDetailModel;
+    private UserProfileModel userProfileModel;
 
 
     public Long getIdUser() {
@@ -72,12 +72,12 @@ public class UserModel extends AuditModel {
         this.password = password;
     }
 
-    public UserDetailModel getUserDetailModel() {
-        return userDetailModel;
+    public UserProfileModel getUserProfileModel() {
+        return userProfileModel;
     }
 
-    public void setUserDetailModel(UserDetailModel userDetailModel) {
-        this.userDetailModel = userDetailModel;
+    public void setUserProfileModel(UserProfileModel userProfileModel) {
+        this.userProfileModel = userProfileModel;
     }
 
     public String getFullName() {
