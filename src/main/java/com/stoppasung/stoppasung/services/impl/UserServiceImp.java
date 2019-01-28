@@ -52,7 +52,7 @@ public class UserServiceImp implements UserService {
         UserModel stored = userRepository.save(userModel);
         userProfileModel.setUserModel(stored);
         userProfileRepository.save(userProfileModel);
-        String message = "Silahkan verifikasi email anda dengan klik link dibawah ini \n " + url + "verification?token=" + emailVerificationToken;
+        String message = "Silahkan verifikasi email anda dengan klik link dibawah ini \n " + url + "user/verification?token=" + emailVerificationToken;
         try {
             utils.sendmail(userModel.getEmail(), userModel.getFullName(), message);
         } catch (MessagingException e) {
