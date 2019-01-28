@@ -12,6 +12,15 @@ public class LaporanRequest {
     private String jenisKelamin;
     private String usia;
     private String emailPelapor;
+    private String emailDokter;
+
+    public String getEmailDokter() {
+        return emailDokter;
+    }
+
+    public void setEmailDokter(String emailDokter) {
+        this.emailDokter = emailDokter;
+    }
 
     public String getNamaPasien() {
         return namaPasien;

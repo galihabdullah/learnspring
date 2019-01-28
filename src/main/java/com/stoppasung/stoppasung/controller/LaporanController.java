@@ -28,27 +28,27 @@ public class LaporanController {
         returnValue.put("status", "sukses");
         return returnValue;
     }
-    @GetMapping("/laporanbelumditangani")
+    @GetMapping("/laporan/belumditangani")
     public List<LaporanDto> getUnpickLaporan(){
         return laporanService.loadLaporanByEmailDokter("none");
     }
 
-    @GetMapping("/laporandokter")
+    @GetMapping("/laporan/dokter")
     public List<LaporanDto> getLaporanByDokter(@RequestParam(value = "email") String email){
         return laporanService.loadLaporanByEmailDokter(email);
     }
 
-    @GetMapping("/laporanpasien")
+    @GetMapping("/laporan/pelapor")
     public List<LaporanDto> getLaporanByPelapor(@RequestParam(value = "email") String email){
         return laporanService.loadLaporanByEmailPelapor(email);
     }
 
-    @PutMapping("/picklaporan")
-    public Map<String, Object> pickLaporan(@RequestParam(value = "idLaporan") String idLaporan,
+    @PutMapping("/laporan/picklaporan")
+    public LaporanRequest pickLaporan(@RequestParam(value = "idLaporan") Long idLaporan,
                                            @RequestParam(value = "emailDokter") String emailDokter){
-        laporanService.pickLaporan(idLaporan, emailDokter);
-        HashMap<String, Object> returnValue = new HashMap<>();
-        returnValue.put("status", "sukses");
+        LaporanRequest returnValue = new LaporanRequest();
+        LaporanDto laporan = laporanService.pickLaporanById(idLaporan, emailDokter);
+        BeanUtils.copyProperties(laporan, returnValue);
         return returnValue;
     }
 

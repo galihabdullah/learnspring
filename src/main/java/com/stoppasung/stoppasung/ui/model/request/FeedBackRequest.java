@@ -4,16 +4,15 @@ import com.stoppasung.stoppasung.model.pilihan.Role;
 
 public class FeedBackRequest {
 
-    private String feedback;
+    private String feedBack;
     private String resep;
-    private Role role;
 
-    public String getFeedback() {
-        return feedback;
+    public String getFeedBack() {
+        return feedBack;
     }
 
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
+    public void setFeedBack(String feedBack) {
+        this.feedBack = feedBack;
     }
 
     public String getResep() {
@@ -22,13 +21,5 @@ public class FeedBackRequest {
 
     public void setResep(String resep) {
         this.resep = resep;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }

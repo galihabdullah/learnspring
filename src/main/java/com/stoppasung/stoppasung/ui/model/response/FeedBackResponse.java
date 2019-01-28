@@ -1,18 +1,15 @@
-package com.stoppasung.stoppasung.shared.dto;
+package com.stoppasung.stoppasung.ui.model.response;
 
 import com.stoppasung.stoppasung.model.pilihan.Role;
 
 import java.util.Date;
 
-public class FeedBackDto {
-
-    private final long serialVersionUID = 1L;
+public class FeedBackResponse {
     private Date createAt;
     private Date updateAt;
     private String feedBack;
     private String resep;
     private Role role;
-    private LaporanDto laporanDto;
 
     public Date getCreateAt() {
         return createAt;
@@ -28,14 +25,6 @@ public class FeedBackDto {
 
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
-    }
-
-    public LaporanDto getLaporanDto() {
-        return laporanDto;
-    }
-
-    public void setLaporanDto(LaporanDto laporanDto) {
-        this.laporanDto = laporanDto;
     }
 
     public String getFeedBack() {

@@ -10,10 +10,10 @@ import com.stoppasung.stoppasung.services.FeedBackService;
 import com.stoppasung.stoppasung.shared.dto.FeedBackDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FeedBackServiceImp implements FeedBackService {
@@ -24,19 +24,28 @@ public class FeedBackServiceImp implements FeedBackService {
     LaporanRepository laporanRepository;
 
     @Override
-    public FeedBackDto createFeedback(Long idLaporan, FeedBackDto feedBackDto) {
+    public FeedBackDto createFeedback(Long idLaporan, FeedBackDto feedBackDto, Role role) {
         FeedBackModel feedBackModel = new FeedBackModel();
         FeedBackDto returnValue = new FeedBackDto();
         return laporanRepository.findById(idLaporan).map(laporanModel -> {
             feedBackModel.setLaporanModel(laporanModel);
             feedBackModel.setFeedback(feedBackDto.getFeedBack());
             feedBackModel.setResep(feedBackDto.getResep());
-            feedBackModel.setRole(Role.dokter);
+            feedBackModel.setRole(role);
             feedBackRepository.save(feedBackModel);
             BeanUtils.copyProperties(feedBackModel, returnValue);
             return returnValue;
         }).orElseThrow(()-> new ResourceNotFoundException("Laporan tidak ditemukan"));
 
+    }
+
+    @Override
+    public List<FeedBackDto> loadFeedBackByIdLaporan(Long idLaporan) {
+        List<FeedBackModel> feedBackModel = feedBackRepository.findByLaporanModelId(idLaporan);
+        if(feedBackModel == null) throw new ResourceNotFoundException("Laporan tidak ditemukan");
+        List feedBack = new ArrayList();
+        feedBack.addAll(feedBackModel);
+        return feedBack;
     }
 
 

@@ -5,14 +5,18 @@ import com.stoppasung.stoppasung.Repository.LaporanRepository;
 import com.stoppasung.stoppasung.error.ResourceNotFoundException;
 import com.stoppasung.stoppasung.model.LaporanModel;
 import com.stoppasung.stoppasung.services.LaporanService;
+import com.stoppasung.stoppasung.shared.dto.FeedBackDto;
 import com.stoppasung.stoppasung.shared.dto.LaporanDto;
 import com.stoppasung.stoppasung.shared.utils.Utils;
+import com.stoppasung.stoppasung.ui.model.request.FeedBackRequest;
+import com.stoppasung.stoppasung.ui.model.request.LaporanRequest;
 import jdk.nashorn.internal.runtime.options.Option;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 @Service
 public class LaporanServiceImp implements LaporanService {
@@ -48,17 +52,17 @@ public class LaporanServiceImp implements LaporanService {
         return laporan;
     }
 
-    @Override
-    public Map<String, Object> pickLaporan(String idlaporan, String emailDokter) {
-        LaporanModel laporanModel = laporanRepository.findByIdLaporan(idlaporan);
-        if(laporanModel == null) throw new ResourceNotFoundException("id laporan tidak ditemukan");
-        if(laporanModel.getEmailDokter().equals("none")) {
-            laporanModel.setEmailDokter(emailDokter);
-            laporanRepository.save(laporanModel);
-            Map<String, Object> returnValue = new HashMap<>();
-            returnValue.put("status", "sukses");
+    public LaporanDto pickLaporanById(Long idlaporan, String emailDokter) {
+        LaporanDto returnValue = new LaporanDto();
+        Optional<LaporanModel> laporanModel = laporanRepository.findById(idlaporan);
+        if(!laporanModel.isPresent()) throw new ResourceNotFoundException("Laporan tidak ditemukan");
+        return laporanModel.map(laporan -> {
+            if(!laporan.getEmailDokter().equals("none")) throw new ResourceNotFoundException("Laporan sudah dihandle oleh dokter lain");
+            laporan.setEmailDokter(emailDokter);
+            laporanRepository.save(laporan);
+            BeanUtils.copyProperties(laporan, returnValue);
             return returnValue;
-        }throw new ResourceNotFoundException("Laporan sudah dihandle oleh " + laporanModel.getEmailDokter());
+        }).orElseThrow(()-> new ResourceNotFoundException("server error"));
     }
 
     @Override

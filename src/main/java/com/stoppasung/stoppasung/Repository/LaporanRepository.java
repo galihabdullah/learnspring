@@ -12,4 +12,5 @@ public interface LaporanRepository extends CrudRepository<LaporanModel, Long> {
     List<LaporanModel> findByEmailDokter(String email);
     List<LaporanModel> findByEmailPelapor(String email);
     LaporanModel findByIdLaporan(String idLaporan);
+    Optional<LaporanModel> findById(Long id);
 }
