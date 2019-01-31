@@ -30,17 +30,17 @@ public class FeedBackController {
     @Autowired
     FeedBackService feedBackService;
 
-//    @PostMapping("/laporandokter/{idLaporan}/dokter/feedback")
-//    public Map<String, Object> addFeedBackDokter(@PathVariable(value = "idLaporan") Long idLaporan,
-//                                  @Valid @RequestBody FeedBackRequest feedBackRequest
-//                                            ){
-//        FeedBackDto feedBackDto = new FeedBackDto();
-//        BeanUtils.copyProperties(feedBackRequest, feedBackDto);
-//        feedBackService.createFeedback(idLaporan, feedBackDto, Role.dokter);
-//        Map<String, Object> returnValue = new HashMap<>();
-//        returnValue.put("status", "sukses");
-//        return returnValue;
-//    }
+    @PostMapping("/laporandokter/{idLaporan}/dokter/feedback")
+    public Map<String, Object> addFeedBackDokter(@PathVariable(value = "idLaporan") Long idLaporan,
+                                  @Valid @RequestBody FeedBackRequest feedBackRequest
+                                            ){
+        FeedBackDto feedBackDto = new FeedBackDto();
+        BeanUtils.copyProperties(feedBackRequest, feedBackDto);
+        feedBackService.createFeedback(idLaporan, feedBackDto, Role.dokter);
+        Map<String, Object> returnValue = new HashMap<>();
+        returnValue.put("status", "sukses");
+        return returnValue;
+    }
 
     @PostMapping("/laporan/{idLaporan}/pelapor/feeback")
     public Map<String, Object> addFeedBackPelapor(@PathVariable(value = "idLaporan") Long idLaporan,
