@@ -21,7 +21,16 @@ public class UserDto implements Serializable {
     private String alamat;
     private String kota;
     private String bio;
+    private UserProfileDto userProfile;
 
+
+    public UserProfileDto getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfileDto userProfile) {
+        this.userProfile = userProfile;
+    }
 
     public String getPasswordResetToken() {
         return passwordResetToken;

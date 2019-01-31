@@ -29,4 +29,16 @@ public class UserProfileImp implements UserProfileService {
         BeanUtils.copyProperties(userProfileModel1, returnValue);
         return returnValue;
     }
+
+    @Override
+    public UserProfileDto loadByUserId(Long idUser) {
+        UserProfileDto returnValue = new UserProfileDto();
+        UserProfileModel userProfileModel = userProfileRepository.findByUserModelIdUser(idUser);
+        if(userProfileModel == null) throw new ResourceNotFoundException("Id User tidak ditemukan");
+        BeanUtils.copyProperties(userProfileModel, returnValue);
+        return returnValue;
+
+    }
+
+
 }

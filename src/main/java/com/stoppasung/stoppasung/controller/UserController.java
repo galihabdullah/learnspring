@@ -1,5 +1,6 @@
 package com.stoppasung.stoppasung.controller;
 
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.stoppasung.stoppasung.services.UserProfileService;
 import com.stoppasung.stoppasung.services.UserService;
 import com.stoppasung.stoppasung.shared.dto.UserDto;
@@ -56,7 +57,10 @@ public class UserController {
         UserDto login = new UserDto();
         BeanUtils.copyProperties(userLoginRequest, login);
         UserDto userDto = userService.getUser(login);
+        UserProfileResponse userProfileResponse = new UserProfileResponse();
         BeanUtils.copyProperties(userDto, returnValue);
+        BeanUtils.copyProperties(userDto.getUserProfile(), userProfileResponse);
+        returnValue.setUserProfile(userProfileResponse);
         return returnValue;
     }
 
@@ -84,6 +88,14 @@ public class UserController {
         BeanUtils.copyProperties(userProfileRequest, profileDto);
         UserProfileDto profile = userProfileService.addUserProfil(idUser, profileDto);
         BeanUtils.copyProperties(profile, returnValue);
+        return returnValue;
+    }
+
+    @GetMapping("{idUser}/profile")
+    public UserProfileResponse getUserProfile(@PathVariable(value = "idUser") Long idUser){
+        UserProfileResponse returnValue = new UserProfileResponse();
+        UserProfileDto userProfile = userProfileService.loadByUserId(idUser);
+        BeanUtils.copyProperties(userProfile, returnValue);
         return returnValue;
     }
 

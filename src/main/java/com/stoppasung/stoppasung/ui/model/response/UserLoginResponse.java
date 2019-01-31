@@ -11,6 +11,15 @@ public class UserLoginResponse {
     private UserStatus userStatus;
     private String fullName;
     private String photoProfile;
+    private UserProfileResponse userProfile;
+
+    public UserProfileResponse getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfileResponse userProfile) {
+        this.userProfile = userProfile;
+    }
 
     public Long getIdUser() {
         return idUser;

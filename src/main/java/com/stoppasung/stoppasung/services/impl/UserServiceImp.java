@@ -9,6 +9,7 @@ import com.stoppasung.stoppasung.model.UserModel;
 import com.stoppasung.stoppasung.model.pilihan.UserStatus;
 import com.stoppasung.stoppasung.services.UserService;
 import com.stoppasung.stoppasung.shared.dto.UserDto;
+import com.stoppasung.stoppasung.shared.dto.UserProfileDto;
 import com.stoppasung.stoppasung.shared.utils.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,11 @@ public class UserServiceImp implements UserService {
         {
             if(userModel.getUserStatus() == UserStatus.INACTIVE) throw new ResourceNotFoundException("email " + login.getEmail() + " belum diverifikasi");
             UserDto returnValue = new UserDto();
+            UserProfileModel userProfileModel = userProfileRepository.findByUserModelIdUser(userModel.getIdUser());
+            UserProfileDto userProfileDto = new UserProfileDto();
+            BeanUtils.copyProperties(userProfileModel, userProfileDto);
             BeanUtils.copyProperties(userModel, returnValue);
+            returnValue.setUserProfile(userProfileDto);
             return returnValue;
         }else{
             throw new ResourceNotFoundException("password salah");
@@ -84,13 +89,10 @@ public class UserServiceImp implements UserService {
     public Map<String, Object> getUserByEmailVerificationToken(String token){
         HashMap returnValue = new HashMap();
         UserModel userModel = userRepository.findByEmailVerificationToken(token);
-        if(userModel != null){
-            userModel.setUserStatus(UserStatus.ACTIVE);
-            userRepository.save(userModel);
-            returnValue.put("message", "sukses");
-        }else{
-            returnValue.put("message", "verifikasi gagal");
-        }
+        if(userModel != null) throw new ResourceNotFoundException("token invalid");
+        userModel.setUserStatus(UserStatus.ACTIVE);
+        userRepository.save(userModel);
+        returnValue.put("message", "sukses");
         return returnValue;
     }
 
