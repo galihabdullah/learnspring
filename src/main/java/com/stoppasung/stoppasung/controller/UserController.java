@@ -1,6 +1,7 @@
 package com.stoppasung.stoppasung.controller;
 
 import com.fasterxml.jackson.databind.util.BeanUtil;
+import com.stoppasung.stoppasung.model.pilihan.Role;
 import com.stoppasung.stoppasung.services.UserProfileService;
 import com.stoppasung.stoppasung.services.UserService;
 import com.stoppasung.stoppasung.shared.dto.UserDto;
@@ -40,9 +41,20 @@ public class UserController {
         UserRegistrationResponse returnValue = new UserRegistrationResponse();
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userReq, userDto);
-
+        userDto.setRole(Role.pelapor);
         UserDto createUser = userService.createUser(userDto);
         BeanUtils.copyProperties(createUser, returnValue);
+        return returnValue;
+    }
+
+    @PostMapping("/registration/dokter")
+    public UserRegistrationResponse registrationDokter(@Valid @RequestBody UserRegistrationRequest userRegistrationRequest){
+        UserRegistrationResponse returnValue = new UserRegistrationResponse();
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(userRegistrationRequest, userDto);
+        userDto.setRole(Role.dokter);
+        UserDto createUrser = userService.createUser(userDto);
+        BeanUtils.copyProperties(createUrser, returnValue);
         return returnValue;
     }
 

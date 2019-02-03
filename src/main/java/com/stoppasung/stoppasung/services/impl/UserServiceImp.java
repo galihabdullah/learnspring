@@ -48,7 +48,6 @@ public class UserServiceImp implements UserService {
         String emailVerificationToken = utils.generateVericationToken(20);
         userModel.setEmailVerificationToken(emailVerificationToken);
         userModel.setUserStatus(UserStatus.INACTIVE);
-        userModel.setRole(Role.pelapor);
         userModel.setPassword(encryptedPassword);
         UserModel stored = userRepository.save(userModel);
         userProfileModel.setUserModel(stored);

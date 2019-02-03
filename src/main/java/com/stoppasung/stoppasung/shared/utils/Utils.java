@@ -8,6 +8,7 @@ import it.ozimov.springboot.mail.service.EmailService;
 import org.apache.commons.io.Charsets;
 import org.apache.tomcat.util.digester.DocumentProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,17 +26,10 @@ import java.util.*;
 @Component
 public class Utils {
 
-    @Autowired
-    private JavaMailSender mailSender;
-
-
     private final Random RANDOM = new SecureRandom();
     private final String ALPHABET = "012345789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private final String emailProvider = "galihabdullah471@gmail.com";
     private final String passProvider = "tcinsqckypgoqdgb";
-    private final String emailHost = "smtp.gmail.com";
-    private final String emailPort = "465";
-    private final String emailName = "ayopulih";
 
 
     public String generateVericationToken(int length) {
