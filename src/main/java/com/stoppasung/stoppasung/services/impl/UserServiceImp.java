@@ -88,7 +88,7 @@ public class UserServiceImp implements UserService {
     public Map<String, Object> getUserByEmailVerificationToken(String token){
         HashMap returnValue = new HashMap();
         UserModel userModel = userRepository.findByEmailVerificationToken(token);
-        if(userModel != null) throw new ResourceNotFoundException("token invalid");
+        if(userModel == null) throw new ResourceNotFoundException("token invalid");
         userModel.setUserStatus(UserStatus.ACTIVE);
         userRepository.save(userModel);
         returnValue.put("message", "sukses");
