@@ -28,8 +28,8 @@ public class Utils {
 
     private final Random RANDOM = new SecureRandom();
     private final String ALPHABET = "012345789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private final String emailProvider = "galihabdullah471@gmail.com";
-    private final String passProvider = "tcinsqckypgoqdgb";
+    private final String emailProvider = "stoppasung@gmail.com";
+    private final String passProvider = "zfmwfvfbbtmhrxnz";
 
 
     public String generateVericationToken(int length) {
